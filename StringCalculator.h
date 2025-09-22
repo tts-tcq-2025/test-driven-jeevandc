@@ -6,9 +6,10 @@
 #include <utility>
 
 class StringCalculator {
-public:
+ public:
   int Add(const std::string& input);
-private:
+
+ private:
   std::pair<std::string, std::vector<std::string>> preprocessInput(
       const std::string& input);
   std::vector<int> splitAndParse(
@@ -22,4 +23,5 @@ private:
   std::string buildDelimiterRegex(const std::vector<std::string>& delimiters);
   std::string escapeRegex(const std::string& delimiter);
 };
+
 #endif  // STRINGCALCULATOR_H_
