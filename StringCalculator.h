@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-class StringCalculator {
+class StringCalculator {  // must have a space
  public:
   int Add(const std::string& input);
 
