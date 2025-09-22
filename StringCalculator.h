@@ -23,5 +23,4 @@ class StringCalculator {
   std::string buildDelimiterRegex(const std::vector<std::string>& delimiters);
   std::string escapeRegex(const std::string& delimiter);
 };
-
 #endif  // STRINGCALCULATOR_H_
