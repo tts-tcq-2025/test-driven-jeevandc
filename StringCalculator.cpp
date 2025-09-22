@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <regex>
 
+// ----------------- Public -----------------
 int StringCalculator::Add(const std::string& input) {
     if (input.empty()) return 0;
 
@@ -14,8 +15,7 @@ int StringCalculator::Add(const std::string& input) {
     return sumNumbers(parsed);
 }
 
-// ----------------- Helpers -----------------
-
+// ----------------- Preprocessing -----------------
 std::pair<std::string, std::vector<std::string>>
 StringCalculator::preprocessInput(const std::string& input) {
     std::string numbers = input;
@@ -34,11 +34,21 @@ StringCalculator::preprocessInput(const std::string& input) {
     return {numbers, delimiters};
 }
 
+// ----------------- Validation -----------------
 void StringCalculator::validateNegatives(const std::vector<int>& parsed) {
+    auto negatives = collectNegatives(parsed);
+    throwIfNegatives(negatives);
+}
+
+std::vector<int> StringCalculator::collectNegatives(const std::vector<int>& parsed) {
     std::vector<int> negatives;
     for (int n : parsed) {
         if (n < 0) negatives.push_back(n);
     }
+    return negatives;
+}
+
+void StringCalculator::throwIfNegatives(const std::vector<int>& negatives) {
     if (!negatives.empty()) {
         std::ostringstream err;
         err << "negatives not allowed:";
@@ -47,6 +57,7 @@ void StringCalculator::validateNegatives(const std::vector<int>& parsed) {
     }
 }
 
+// ----------------- Summing -----------------
 int StringCalculator::sumNumbers(const std::vector<int>& parsed) {
     int sum = 0;
     for (int n : parsed) {
@@ -55,36 +66,37 @@ int StringCalculator::sumNumbers(const std::vector<int>& parsed) {
     return sum;
 }
 
+// ----------------- Delimiters -----------------
 std::vector<std::string> StringCalculator::parseDelimiters(const std::string& section) {
-    std::vector<std::string> result;
-
     if (section.size() >= 2 && section.front() == '[' && section.back() == ']') {
-        std::regex re(R"(\[([^\]]+)\])");
-        std::smatch match;
-        std::string s = section;
-        while (std::regex_search(s, match, re)) {
-            result.push_back(match[1]);
-            s = match.suffix();
-        }
-    } else {
-        result.push_back(section);
+        return parseMultiDelimiters(section);
     }
+    return parseSingleDelimiter(section);
+}
 
+std::vector<std::string> StringCalculator::parseMultiDelimiters(const std::string& section) {
+    std::vector<std::string> result;
+    std::regex re(R"(\[([^\]]+)\])");
+    std::smatch match;
+    std::string s = section;
+    while (std::regex_search(s, match, re)) {
+        result.push_back(match[1]);
+        s = match.suffix();
+    }
     return result;
 }
 
+std::vector<std::string> StringCalculator::parseSingleDelimiter(const std::string& section) {
+    return {section};
+}
+
+// ----------------- Splitting -----------------
 std::vector<int> StringCalculator::splitAndParse(
     const std::string& numbers,
     const std::vector<std::string>& delimiters) {
 
     std::vector<int> result;
-
-    std::string regexPattern;
-    for (size_t i = 0; i < delimiters.size(); ++i) {
-        if (i > 0) regexPattern += "|";
-        regexPattern += escapeRegex(delimiters[i]);
-    }
-    std::regex re(regexPattern);
+    std::regex re(buildDelimiterRegex(delimiters));
 
     std::sregex_token_iterator iter(numbers.begin(), numbers.end(), re, -1);
     std::sregex_token_iterator end;
@@ -96,6 +108,16 @@ std::vector<int> StringCalculator::splitAndParse(
     return result;
 }
 
+std::string StringCalculator::buildDelimiterRegex(const std::vector<std::string>& delimiters) {
+    std::string regexPattern;
+    for (size_t i = 0; i < delimiters.size(); ++i) {
+        if (i > 0) regexPattern += "|";
+        regexPattern += escapeRegex(delimiters[i]);
+    }
+    return regexPattern;
+}
+
+// ----------------- Helpers -----------------
 std::string StringCalculator::escapeRegex(const std::string& s) {
     static const std::regex special(R"([-[\]{}()*+?.,\^$|#\s])");
     return std::regex_replace(s, special, R"(\$&)");
