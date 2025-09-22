@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-class StringCalculator {
+class StringCalculator {  
  public:
   int Add(const std::string& input);
 
