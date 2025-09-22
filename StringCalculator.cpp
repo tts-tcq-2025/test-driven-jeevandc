@@ -67,12 +67,16 @@ int StringCalculator::sumNumbers(const std::vector<int>& parsed) {
 }
 
 // ----------------- Delimiters -----------------
-std::vector<std::string> StringCalculator::parseDelimiters(const std::string& section) {
-    if (section.size() >= 2 && section.front() == '[' && section.back() == ']') {
-        return parseMultiDelimiters(section);
+std::vector<std::string> StringCalculator::parseDelimiters(const std::string& input) {
+    if (input.rfind("//[", 0) == 0) {
+        return parseMultiDelimiters(input);
     }
-    return parseSingleDelimiter(section);
+    if (input.rfind("//", 0) == 0) {
+        return parseSingleDelimiter(input);
+    }
+    return {",", "\n"}; // default delimiters
 }
+
 
 std::vector<std::string> StringCalculator::parseMultiDelimiters(const std::string& section) {
     std::vector<std::string> result;
