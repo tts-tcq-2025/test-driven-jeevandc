@@ -1,30 +1,25 @@
-#pragma once
+#ifndef STRING_CALCULATOR_H
+#define STRING_CALCULATOR_H
+
 #include <string>
 #include <vector>
 #include <utility>
 
 class StringCalculator {
-public:
-    int Add(const std::string& input);
+ public:
+  int Add(const std::string& input);
 
-private:
-    // Core steps
-    std::pair<std::string, std::vector<std::string>> preprocessInput(const std::string& input);
-    void validateNegatives(const std::vector<int>& parsed);
-    int sumNumbers(const std::vector<int>& parsed);
-
-    // Delimiter parsing
-    std::vector<std::string> parseDelimiters(const std::string& section);
-    std::vector<std::string> parseMultiDelimiters(const std::string& section);
-    std::vector<std::string> parseSingleDelimiter(const std::string& section);
-
-    // Number parsing
-    std::vector<int> splitAndParse(const std::string& numbers,
-                                   const std::vector<std::string>& delimiters);
-    std::string buildDelimiterRegex(const std::vector<std::string>& delimiters);
-
-    // Helpers
-    std::string escapeRegex(const std::string& s);
-    std::vector<int> collectNegatives(const std::vector<int>& parsed);
-    void throwIfNegatives(const std::vector<int>& negatives);
+ private:
+  std::pair<std::string, std::vector<std::string>> preprocessInput(const std::string& input);
+  std::vector<int> splitAndParse(const std::string& numbers, const std::vector<std::string>& delimiters);
+  std::vector<std::string> parseDelimiters(const std::string& input);
+  std::vector<std::string> parseMultiDelimiters(const std::string& input);
+  std::vector<std::string> parseSingleDelimiter(const std::string& input);
+  std::vector<int> collectNegatives(const std::vector<int>& numbers);
+  void throwIfNegatives(const std::vector<int>& negatives);
+  int sumNumbers(const std::vector<int>& numbers);
+  std::string buildDelimiterRegex(const std::vector<std::string>& delimiters);
+  std::string escapeRegex(const std::string& delimiter);
 };
+
+#endif  // STRING_CALCULATOR_H
