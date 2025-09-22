@@ -5,11 +5,10 @@
 #include <vector>
 #include <utility>
 
-class StringCalculator {  
- public:
+class StringCalculator {
+public:
   int Add(const std::string& input);
-
- private:
+private:
   std::pair<std::string, std::vector<std::string>> preprocessInput(
       const std::string& input);
   std::vector<int> splitAndParse(
