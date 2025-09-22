@@ -1,5 +1,6 @@
 #include "StringCalculator.h"
 #include <gtest/gtest.h>
+#include <string>
 
 TEST(StringCalculatorTest, EmptyStringReturnsZero) {
   StringCalculator calc;
