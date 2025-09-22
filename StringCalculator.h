@@ -1,5 +1,5 @@
-#ifndef STRING_CALCULATOR_H
-#define STRING_CALCULATOR_H
+#ifndef STRINGCALCULATOR_H_
+#define STRINGCALCULATOR_H_
 
 #include <string>
 #include <vector>
@@ -10,8 +10,10 @@ class StringCalculator {
   int Add(const std::string& input);
 
  private:
-  std::pair<std::string, std::vector<std::string>> preprocessInput(const std::string& input);
-  std::vector<int> splitAndParse(const std::string& numbers, const std::vector<std::string>& delimiters);
+  std::pair<std::string, std::vector<std::string>> preprocessInput(
+      const std::string& input);
+  std::vector<int> splitAndParse(
+      const std::string& numbers, const std::vector<std::string>& delimiters);
   std::vector<std::string> parseDelimiters(const std::string& input);
   std::vector<std::string> parseMultiDelimiters(const std::string& input);
   std::vector<std::string> parseSingleDelimiter(const std::string& input);
@@ -22,4 +24,4 @@ class StringCalculator {
   std::string escapeRegex(const std::string& delimiter);
 };
 
-#endif  // STRING_CALCULATOR_H
+#endif  // STRINGCALCULATOR_H_
